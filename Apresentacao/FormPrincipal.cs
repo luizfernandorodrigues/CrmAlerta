@@ -37,6 +37,10 @@ namespace Apresentacao
             textBoxMensagem.Text = r03.R03_003_m;
            
             this.Text += " " + "Data " + r03.R03_001_d.ToShortDateString() + " " + "Hora " + r03.R03_002_c;
+
+            notifyIconAlerta.BalloonTipText = r03.R03_003_m;
+            notifyIconAlerta.Visible = true;
+            notifyIconAlerta.ShowBalloonTip(5000);
         }
         /// <summary>
         /// função botão para não despertar mais a tarefa

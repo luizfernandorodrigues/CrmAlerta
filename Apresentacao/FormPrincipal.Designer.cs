@@ -54,9 +54,8 @@
             // notifyIconAlerta
             // 
             this.notifyIconAlerta.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notifyIconAlerta.BalloonTipText = "Você Possui Tarefas Agendadas!";
             this.notifyIconAlerta.BalloonTipTitle = "Saerp Informa";
-            this.notifyIconAlerta.Text = "Lembrete\r\n";
+            this.notifyIconAlerta.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconAlerta.Icon")));
             this.notifyIconAlerta.Visible = true;
             // 
             // buttonNaoMais
