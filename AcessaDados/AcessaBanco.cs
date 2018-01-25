@@ -29,15 +29,26 @@ namespace AcessaDados
         public SqlConnection CriarConexao()
         {
             //busca os dados de acesso ao servidor atraves do conecta
-            string[] array = File.ReadAllLines(@"C:\SAERP\conecta.txt");
-            string aux = array[1];
-            string[] arrayaux = aux.Split(',');
-            server = arrayaux[0];
-            usuario = arrayaux[1];
-            senha = arrayaux[2];
-            banco = arrayaux[3];
-            return new SqlConnection("Data Source = " + server + "; Initial Catalog = " + banco + "; Persist Security Info = True; User ID = " + usuario + "; Password = " + senha + "");
+            try
+            {
+                string caminho = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory.ToString());
+                string nomeArquivo = "conecta.txt";
+                string caminhoAbsoluto = Path.Combine(caminho, nomeArquivo);
+                string[] array = File.ReadAllLines(caminhoAbsoluto);
+                string aux = array[0];
+                string[] arrayaux = aux.Split(',');
+                server = arrayaux[0];
+                usuario = arrayaux[1];
+                senha = arrayaux[2];
+                banco = arrayaux[3];
+                return new SqlConnection("Data Source = " + server + "; Initial Catalog = " + banco + "; Persist Security Info = True; User ID = " + usuario + "; Password = " + senha + "");
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
 
         }
         private SqlParameterCollection sqlParametros = new SqlCommand().Parameters;

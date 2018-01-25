@@ -19,6 +19,7 @@ namespace Apresentacao
     {
 
         R03Agendamentos r03 = new R03Agendamentos();
+        private string dataInicial = DateTime.Now.ToString();
 
 
         public FormPrincipal(R03Agendamentos r03Agendamentos)
@@ -34,13 +35,31 @@ namespace Apresentacao
         /// <param name="e"></param>
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-            textBoxMensagem.Text = r03.R03_003_m;
-           
-            this.Text += " " + "Data " + r03.R03_001_d.ToShortDateString() + " " + "Hora " + r03.R03_002_c;
+            if (string.IsNullOrEmpty(r03.Contato.Trim()))
+            {
+                r03.Contato = "Nenhum Contato Encontrado!";
+            }
+            if (string.IsNullOrEmpty(r03.Fone.Trim()))
+            {
+                r03.Fone = "Nenhum Telefone Encontrado!";
+            }
+            if (string.IsNullOrEmpty(r03.Celular.Trim()))
+            {
+                r03.Celular = "Nenhum Celular Encontrado!";
+            }
+            string mensagem = string.Format("Código: " + r03.CodigoParceiro.Trim() + "{0}", Environment.NewLine);
+            mensagem += string.Format("Contato: " + r03.Contato.Trim() + "{0}", Environment.NewLine);
+            mensagem += string.Format("Celular: " + r03.Celular.Trim() + "{0}", Environment.NewLine);
+            mensagem += string.Format("Fone: " + r03.Fone.Trim() + "{0}", Environment.NewLine);
+            mensagem += "Mensagem: " + r03.R03_003_m;
+            txtMensagem.Text = mensagem;
 
-            notifyIconAlerta.BalloonTipText = r03.R03_003_m;
+            this.Text = r03.NomePaceiro;
+            this.maskedTextBoxData.Text = dataInicial;
+            notifyIconAlerta.BalloonTipText = r03.NomePaceiro;
             notifyIconAlerta.Visible = true;
-            notifyIconAlerta.ShowBalloonTip(5000);
+            notifyIconAlerta.ShowBalloonTip(10000);
+            notifyIconAlerta.Visible = false;
         }
         /// <summary>
         /// função botão para não despertar mais a tarefa

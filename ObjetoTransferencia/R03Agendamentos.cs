@@ -29,6 +29,11 @@ namespace ObjetoTransferencia
         private string ukey;
         private string usr_note;
         private string usr_ukey;
+        private string nomePaceiro;
+        private string codigoParceiro;
+        private string contato;
+        private string fone;
+        private string celular;
 
         public string Cia_ukey { get => cia_ukey; set => cia_ukey = value; }
         public string R01_ukey { get => r01_ukey; set => r01_ukey = value; }
@@ -51,5 +56,10 @@ namespace ObjetoTransferencia
         public string Ukey { get => ukey; set => ukey = value; }
         public string Usr_note { get => usr_note; set => usr_note = value; }
         public string Usr_ukey { get => usr_ukey; set => usr_ukey = value; }
+        public string NomePaceiro { get => nomePaceiro; set => nomePaceiro = value; }
+        public string CodigoParceiro { get => codigoParceiro; set => codigoParceiro = value; }
+        public string Contato { get => contato; set => contato = value; }
+        public string Fone { get => fone; set => fone = value; }
+        public string Celular { get => celular; set => celular = value; }
     }
 }

@@ -25,9 +25,15 @@ namespace Negocio
             R03AgendamentosCollection r03AgendamentosCollection = new R03AgendamentosCollection();
             conn.CriarConexao();
             DataTable dataTable = new DataTable();
-            var select = "SELECT USUARIO.UKEY AS UKEY_USER, A03.UKEY AS UKEY_CLIENTE, R03.UKEY AS R03_UKEY, * FROM R03" +
+            var select = "SELECT" +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_016_C WHEN A08.UKEY IS NOT NULL THEN A08_005_C END AS CONTATO," +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_012_C WHEN A08.UKEY IS NOT NULL THEN A08_003_C END AS FONE," +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_014_C WHEN A08.UKEY IS NOT NULL THEN A08_014_C END AS CELULAR," +
+                " USUARIO.UKEY AS UKEY_USER, A03.UKEY AS UKEY_CLIENTE, R03.UKEY AS R03_UKEY, * " +
+                " FROM R03" +
                 " INNER JOIN R01 ON R01.UKEY = R03.R01_UKEY" +
                 " INNER JOIN A03 ON A03.UKEY = R01.A03_UKEY" +
+                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY" + 
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
                 " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D <= @DATA_DESPERTA" +
                 " AND USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C = @HORA_AGENDADA" +
@@ -64,6 +70,11 @@ namespace Negocio
                 r03Agendamentos.Timestamp = Convert.ToDateTime(linha["TIMESTAMP"]);
                 r03Agendamentos.Ukey = Convert.ToString(linha["UKEY"]);
                 r03Agendamentos.Usr_note = Convert.ToString(linha["USR_NOTE"]);
+                r03Agendamentos.NomePaceiro = Convert.ToString(linha["A03_003_C"]);
+                r03Agendamentos.CodigoParceiro = Convert.ToString(linha["A03_001_C"]);
+                r03Agendamentos.Contato = Convert.ToString(linha["CONTATO"]);
+                r03Agendamentos.Celular = Convert.ToString(linha["CELULAR"]);
+                r03Agendamentos.Fone = Convert.ToString(linha["FONE"]);
                 r03AgendamentosCollection.Add(r03Agendamentos);
             }
             return r03AgendamentosCollection;
@@ -111,9 +122,14 @@ namespace Negocio
             R03AgendamentosCollection r03AgendamentosCollection = new R03AgendamentosCollection();
             conn.CriarConexao();
             DataTable dataTable = new DataTable();
-            var select = "SELECT USUARIO.UKEY AS UKEY_USER, A03.UKEY AS UKEY_CLIENTE, R03.UKEY AS R03_UKEY, * FROM R03" +
+            var select = "SELECT" +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_016_C WHEN A08.UKEY IS NOT NULL THEN A08_005_C END AS CONTATO," +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_012_C WHEN A08.UKEY IS NOT NULL THEN A08_003_C END AS FONE," +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_014_C WHEN A08.UKEY IS NOT NULL THEN A08_014_C END AS CELULAR," +
+                " USUARIO.UKEY AS UKEY_USER, A03.UKEY AS UKEY_CLIENTE, R03.UKEY AS R03_UKEY, * FROM R03" +
                 " INNER JOIN R01 ON R01.UKEY = R03.R01_UKEY" +
                 " INNER JOIN A03 ON A03.UKEY = R01.A03_UKEY" +
+                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
                 " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D < @DATA_DESPERTA" +
                 " AND USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA" +
@@ -148,6 +164,11 @@ namespace Negocio
                 r03Agendamentos.Timestamp = Convert.ToDateTime(linha["TIMESTAMP"]);
                 r03Agendamentos.Ukey = Convert.ToString(linha["UKEY"]);
                 r03Agendamentos.Usr_note = Convert.ToString(linha["USR_NOTE"]);
+                r03Agendamentos.NomePaceiro = Convert.ToString(linha["A03_003_C"]);
+                r03Agendamentos.CodigoParceiro = Convert.ToString(linha["A03_001_C"]);
+                r03Agendamentos.Contato = Convert.ToString(linha["CONTATO"]);
+                r03Agendamentos.Celular = Convert.ToString(linha["CELULAR"]);
+                r03Agendamentos.Fone = Convert.ToString(linha["FONE"]);
                 r03AgendamentosCollection.Add(r03Agendamentos);
             }
             return r03AgendamentosCollection;

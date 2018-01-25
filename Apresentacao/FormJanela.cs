@@ -23,6 +23,8 @@ namespace Apresentacao
             InitializeComponent();
             // carrega atrasadas primeiro
             carregaAtrasada();
+            this.notifyIconJanelaPrincipal.Visible = true;
+            
         }
         /// <summary>
         /// Evento load do form, responsavel por ocultar o icone da aplicação e deixa-la minimizada
@@ -77,6 +79,24 @@ namespace Apresentacao
                 FormPrincipal frm = new FormPrincipal(agendamentos);
                 frm.Show();
             }
+        }
+
+        private void notifyIconJanelaPrincipal_MouseMove(object sender, MouseEventArgs e)
+        {
+            this.notifyIconJanelaPrincipal.Text = "CRM SAERP (Online)";
+        }
+
+        private void notifyIconJanelaPrincipal_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+
+            }
+        }
+
+        private void toolStripMenuItemFechar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

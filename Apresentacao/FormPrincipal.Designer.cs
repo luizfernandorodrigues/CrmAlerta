@@ -43,7 +43,7 @@
             this.labelDespertar = new System.Windows.Forms.Label();
             this.labelData = new System.Windows.Forms.Label();
             this.labelHora = new System.Windows.Forms.Label();
-            this.textBoxMensagem = new System.Windows.Forms.TextBox();
+            this.txtMensagem = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // timerAlerta
@@ -163,20 +163,21 @@
             this.labelHora.TabIndex = 11;
             this.labelHora.Text = "Hora:";
             // 
-            // textBoxMensagem
+            // txtMensagem
             // 
-            this.textBoxMensagem.Location = new System.Drawing.Point(12, 12);
-            this.textBoxMensagem.Multiline = true;
-            this.textBoxMensagem.Name = "textBoxMensagem";
-            this.textBoxMensagem.Size = new System.Drawing.Size(797, 374);
-            this.textBoxMensagem.TabIndex = 12;
+            this.txtMensagem.Location = new System.Drawing.Point(2, 2);
+            this.txtMensagem.Multiline = true;
+            this.txtMensagem.Name = "txtMensagem";
+            this.txtMensagem.ReadOnly = true;
+            this.txtMensagem.Size = new System.Drawing.Size(818, 384);
+            this.txtMensagem.TabIndex = 12;
             // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(821, 424);
-            this.Controls.Add(this.textBoxMensagem);
+            this.Controls.Add(this.txtMensagem);
             this.Controls.Add(this.labelHora);
             this.Controls.Add(this.labelData);
             this.Controls.Add(this.labelDespertar);
@@ -192,7 +193,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Agendamentos";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.FormPrincipal_Load);
             this.ResumeLayout(false);
@@ -214,7 +214,7 @@
         private System.Windows.Forms.Label labelDespertar;
         private System.Windows.Forms.Label labelData;
         private System.Windows.Forms.Label labelHora;
-        public System.Windows.Forms.TextBox textBoxMensagem;
+        private System.Windows.Forms.TextBox txtMensagem;
     }
 }
 
