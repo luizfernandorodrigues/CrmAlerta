@@ -23,6 +23,7 @@ namespace Apresentacao
             InitializeComponent();
             // carrega atrasadas primeiro
             carregaAtrasada();
+            atrasadasComHora();
             this.notifyIconJanelaPrincipal.Visible = true;
             
         }
@@ -90,13 +91,29 @@ namespace Apresentacao
         {
             if(e.Button == MouseButtons.Left)
             {
-
+               
             }
         }
 
         private void toolStripMenuItemFechar_Click(object sender, EventArgs e)
         {
             Application.Exit();
+            this.Close();
+        }
+
+        private void atrasadasComHora()
+        {
+            collection = negocio.despertaAtradosDataAnteriorHoraMaior(negocio.user_ukey(Util.usuario()));
+            if (collection.Count == 0)
+            {
+                return;
+            }
+            for (int i = 0; i < collection.Count; i++)
+            {
+                agendamentos = collection[i];
+                FormPrincipal frm = new FormPrincipal(agendamentos);
+                frm.Show();
+            }
         }
     }
 }

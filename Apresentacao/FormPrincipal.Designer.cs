@@ -38,12 +38,13 @@
             this.buttonUmaSemana = new System.Windows.Forms.Button();
             this.buttonUmMes = new System.Windows.Forms.Button();
             this.buttonDespertar = new System.Windows.Forms.Button();
-            this.maskedTextBoxData = new System.Windows.Forms.MaskedTextBox();
             this.maskedTextBoxHora = new System.Windows.Forms.MaskedTextBox();
             this.labelDespertar = new System.Windows.Forms.Label();
             this.labelData = new System.Windows.Forms.Label();
             this.labelHora = new System.Windows.Forms.Label();
             this.txtMensagem = new System.Windows.Forms.TextBox();
+            this.dateTimePickerData = new System.Windows.Forms.DateTimePicker();
+            this.toolTipIcone = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // timerAlerta
@@ -110,7 +111,7 @@
             // 
             // buttonDespertar
             // 
-            this.buttonDespertar.Location = new System.Drawing.Point(720, 392);
+            this.buttonDespertar.Location = new System.Drawing.Point(731, 390);
             this.buttonDespertar.Name = "buttonDespertar";
             this.buttonDespertar.Size = new System.Drawing.Size(89, 23);
             this.buttonDespertar.TabIndex = 6;
@@ -118,18 +119,9 @@
             this.buttonDespertar.UseVisualStyleBackColor = true;
             this.buttonDespertar.Click += new System.EventHandler(this.buttonDespertar_Click);
             // 
-            // maskedTextBoxData
-            // 
-            this.maskedTextBoxData.Location = new System.Drawing.Point(529, 393);
-            this.maskedTextBoxData.Mask = "00/00/0000";
-            this.maskedTextBoxData.Name = "maskedTextBoxData";
-            this.maskedTextBoxData.Size = new System.Drawing.Size(71, 20);
-            this.maskedTextBoxData.TabIndex = 7;
-            this.maskedTextBoxData.ValidatingType = typeof(System.DateTime);
-            // 
             // maskedTextBoxHora
             // 
-            this.maskedTextBoxHora.Location = new System.Drawing.Point(645, 393);
+            this.maskedTextBoxHora.Location = new System.Drawing.Point(658, 392);
             this.maskedTextBoxHora.Mask = "90:00";
             this.maskedTextBoxHora.Name = "maskedTextBoxHora";
             this.maskedTextBoxHora.Size = new System.Drawing.Size(67, 20);
@@ -157,7 +149,7 @@
             // labelHora
             // 
             this.labelHora.AutoSize = true;
-            this.labelHora.Location = new System.Drawing.Point(606, 397);
+            this.labelHora.Location = new System.Drawing.Point(619, 397);
             this.labelHora.Name = "labelHora";
             this.labelHora.Size = new System.Drawing.Size(33, 13);
             this.labelHora.TabIndex = 11;
@@ -172,17 +164,25 @@
             this.txtMensagem.Size = new System.Drawing.Size(818, 384);
             this.txtMensagem.TabIndex = 12;
             // 
+            // dateTimePickerData
+            // 
+            this.dateTimePickerData.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerData.Location = new System.Drawing.Point(529, 393);
+            this.dateTimePickerData.Name = "dateTimePickerData";
+            this.dateTimePickerData.Size = new System.Drawing.Size(84, 20);
+            this.dateTimePickerData.TabIndex = 13;
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(821, 424);
+            this.Controls.Add(this.dateTimePickerData);
             this.Controls.Add(this.txtMensagem);
             this.Controls.Add(this.labelHora);
             this.Controls.Add(this.labelData);
             this.Controls.Add(this.labelDespertar);
             this.Controls.Add(this.maskedTextBoxHora);
-            this.Controls.Add(this.maskedTextBoxData);
             this.Controls.Add(this.buttonDespertar);
             this.Controls.Add(this.buttonUmMes);
             this.Controls.Add(this.buttonUmaSemana);
@@ -209,12 +209,13 @@
         private System.Windows.Forms.Button buttonUmaSemana;
         private System.Windows.Forms.Button buttonUmMes;
         private System.Windows.Forms.Button buttonDespertar;
-        private System.Windows.Forms.MaskedTextBox maskedTextBoxData;
         private System.Windows.Forms.MaskedTextBox maskedTextBoxHora;
         private System.Windows.Forms.Label labelDespertar;
         private System.Windows.Forms.Label labelData;
         private System.Windows.Forms.Label labelHora;
         private System.Windows.Forms.TextBox txtMensagem;
+        private System.Windows.Forms.DateTimePicker dateTimePickerData;
+        private System.Windows.Forms.ToolTip toolTipIcone;
     }
 }
 

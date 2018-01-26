@@ -47,19 +47,23 @@ namespace Apresentacao
             {
                 r03.Celular = "Nenhum Celular Encontrado!";
             }
-            string mensagem = string.Format("Código: " + r03.CodigoParceiro.Trim() + "{0}", Environment.NewLine);
+            string celular = string.Format("{0: (##) #####-####}", Convert.ToInt64(r03.Celular.Trim()));
+            string fone = string.Format("{0: (##) ####-####}", Convert.ToInt64(r03.Fone.Trim()));
+            string mensagem = string.Format("Agendado para " + r03.R03_001_d.ToShortDateString() + " AS " + r03.R03_002_c + "{0}", Environment.NewLine);
+            mensagem += string.Format("Código: " + r03.CodigoParceiro.Trim() + "{0}", Environment.NewLine);
             mensagem += string.Format("Contato: " + r03.Contato.Trim() + "{0}", Environment.NewLine);
-            mensagem += string.Format("Celular: " + r03.Celular.Trim() + "{0}", Environment.NewLine);
-            mensagem += string.Format("Fone: " + r03.Fone.Trim() + "{0}", Environment.NewLine);
+            mensagem += string.Format("Celular: " + celular + "{0}", Environment.NewLine);
+            mensagem += string.Format("Fone: " + fone + "{0}", Environment.NewLine);
             mensagem += "Mensagem: " + r03.R03_003_m;
             txtMensagem.Text = mensagem;
 
             this.Text = r03.NomePaceiro;
-            this.maskedTextBoxData.Text = dataInicial;
+            this.dateTimePickerData.Text = dataInicial;
             notifyIconAlerta.BalloonTipText = r03.NomePaceiro;
             notifyIconAlerta.Visible = true;
             notifyIconAlerta.ShowBalloonTip(10000);
             notifyIconAlerta.Visible = false;
+            
         }
         /// <summary>
         /// função botão para não despertar mais a tarefa
@@ -169,7 +173,7 @@ namespace Apresentacao
         private void buttonDespertar_Click(object sender, EventArgs e)
         {
             //pega a data e hora e formata
-            string data = maskedTextBoxData.Text.Replace("/", "").Trim();
+            string data = dateTimePickerData.Text.Replace("/", "").Trim();
             string hora = maskedTextBoxHora.Text.Replace(":", "").Trim();
             //verifica se algum campo esta vazio, se estiver da um return e avisa que os dois campos tem que estar preenchido
             if (data.Equals("") || hora.Equals(""))
@@ -181,7 +185,7 @@ namespace Apresentacao
             R03Negocio negocio = new R03Negocio();
             try
             {
-                negocio.despertaDataEspecifica(r03.Ukey, negocio.user_ukey(Util.usuario()), maskedTextBoxData.Text, maskedTextBoxHora.Text);
+                negocio.despertaDataEspecifica(r03.Ukey, negocio.user_ukey(Util.usuario()), dateTimePickerData.Text, maskedTextBoxHora.Text);
                 MessageBox.Show("Tarefa Reagendada com Sucesso!", "Saerp Informa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Dispose();
             }

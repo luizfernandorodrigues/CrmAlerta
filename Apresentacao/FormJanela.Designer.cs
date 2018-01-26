@@ -59,6 +59,7 @@
             this.contextMenuStripMenuBalao.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemFechar});
             this.contextMenuStripMenuBalao.Name = "contextMenuStripMenuBalao";
+            this.contextMenuStripMenuBalao.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.contextMenuStripMenuBalao.Size = new System.Drawing.Size(153, 48);
             // 
             // toolStripMenuItemFechar

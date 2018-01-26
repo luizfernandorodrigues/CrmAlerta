@@ -33,10 +33,10 @@ namespace Negocio
                 " FROM R03" +
                 " INNER JOIN R01 ON R01.UKEY = R03.R01_UKEY" +
                 " INNER JOIN A03 ON A03.UKEY = R01.A03_UKEY" +
-                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY" + 
+                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
-                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D <= @DATA_DESPERTA" +
-                " AND USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C = @HORA_AGENDADA" +
+                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D = @DATA_DESPERTA" +
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C = @HORA_AGENDADA" +
                 " ORDER BY R03.TIMESTAMP ASC";
             DateTime dateTime = DateTime.Now;
             // string hora_minuto = string.Format("{0:hh:mm}", dateTime);
@@ -129,19 +129,22 @@ namespace Negocio
                 " USUARIO.UKEY AS UKEY_USER, A03.UKEY AS UKEY_CLIENTE, R03.UKEY AS R03_UKEY, * FROM R03" +
                 " INNER JOIN R01 ON R01.UKEY = R03.R01_UKEY" +
                 " INNER JOIN A03 ON A03.UKEY = R01.A03_UKEY" +
-                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY" +
+                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
-                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D < @DATA_DESPERTA" +
-                " AND USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA" +
+                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D = @DATA_DESPERTA" +
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C <= @HORADESPERTA" +
                 " ORDER BY R03.TIMESTAMP ASC";
-            DateTime dateTime = DateTime.Now;
-            string hora_minuto = string.Format("{0:hh:mm}", dateTime);
 
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("pt-BR");
+
+            string hrinicial = String.Format("{0:t}", DateTime.Now);
+            string data = DateTime.Now.ToShortDateString();
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@DESPERTA_TELA", 1);
-            conn.AdicionarParametros("@DATA_DESPERTA", DateTime.Now.Date);
+            conn.AdicionarParametros("@DATA_DESPERTA", data);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
             conn.AdicionarParametros("@TAREFA_ENCERRADA", 0);
+            conn.AdicionarParametros("@HORADESPERTA", hrinicial);
             dataTable = conn.ExecutaConsulta(CommandType.Text, select);
 
             foreach (DataRow linha in dataTable.Rows)
@@ -284,6 +287,71 @@ namespace Negocio
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
+        }
+
+        public R03AgendamentosCollection despertaAtradosDataAnteriorHoraMaior(string user_ukey)
+        {
+            AcessaBanco conn = new AcessaBanco();
+            R03AgendamentosCollection r03AgendamentosCollection = new R03AgendamentosCollection();
+            conn.CriarConexao();
+            DataTable dataTable = new DataTable();
+            var select = "SELECT" +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_016_C WHEN A08.UKEY IS NOT NULL THEN A08_005_C END AS CONTATO," +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_012_C WHEN A08.UKEY IS NOT NULL THEN A08_003_C END AS FONE," +
+                " CASE WHEN A08.UKEY IS NULL THEN A03_014_C WHEN A08.UKEY IS NOT NULL THEN A08_014_C END AS CELULAR," +
+                " USUARIO.UKEY AS UKEY_USER, A03.UKEY AS UKEY_CLIENTE, R03.UKEY AS R03_UKEY, * FROM R03" +
+                " INNER JOIN R01 ON R01.UKEY = R03.R01_UKEY" +
+                " INNER JOIN A03 ON A03.UKEY = R01.A03_UKEY" +
+                " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
+                " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
+                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D < @DATA_DESPERTA" +
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA" +
+                " ORDER BY R03.TIMESTAMP ASC";
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("pt-BR");
+
+            string hrinicial = String.Format("{0:t}", DateTime.Now);
+            string data = DateTime.Now.ToShortDateString();
+
+            conn.AdicionarParametros("@NAO_DESPERTA", 0);
+            conn.AdicionarParametros("@DESPERTA_TELA", 1);
+            conn.AdicionarParametros("@DATA_DESPERTA", data);
+            conn.AdicionarParametros("@UKEY_USER", user_ukey);
+            conn.AdicionarParametros("@TAREFA_ENCERRADA", 0);
+            dataTable = conn.ExecutaConsulta(CommandType.Text, select);
+
+            foreach (DataRow linha in dataTable.Rows)
+            {
+                R03Agendamentos r03Agendamentos = new R03Agendamentos();
+                r03Agendamentos.R03_001_d = Convert.ToDateTime(linha["R03_001_D"]);
+                r03Agendamentos.R03_002_c = Convert.ToString(linha["R03_002_C"]);
+                r03Agendamentos.R03_003_m = Convert.ToString(linha["R03_003_M"]);
+                r03Agendamentos.R03_004_n = Convert.ToInt16(linha["R03_004_N"]);
+                r03Agendamentos.R03_005_n = Convert.ToInt16(linha["R03_005_N"]);
+                r03Agendamentos.R03_006_n = Convert.ToInt16(linha["R03_006_N"]);
+                r03Agendamentos.R03_007_c = Convert.ToString(linha["R03_007_C"]);
+                r03Agendamentos.R03_008_n = Convert.ToInt16(linha["R03_008_N"]);
+                r03Agendamentos.R03_009_n = Convert.ToInt16(linha["R03_009_N"]);
+                r03Agendamentos.R03_010_n = Convert.ToInt16(linha["R03_010_N"]);
+                r03Agendamentos.R03_011_n = Convert.ToInt16(linha["R03_011_N"]);
+                r03Agendamentos.R03_012_d = Convert.ToDateTime(linha["R03_012_D"]);
+                r03Agendamentos.R03_par = Convert.ToString(linha["R03_PAR"]);
+                r03Agendamentos.R03_ukeyp = Convert.ToString(linha["R03_UKEYP"]);
+                r03Agendamentos.Timestamp = Convert.ToDateTime(linha["TIMESTAMP"]);
+                r03Agendamentos.Ukey = Convert.ToString(linha["UKEY"]);
+                r03Agendamentos.Usr_note = Convert.ToString(linha["USR_NOTE"]);
+                r03Agendamentos.NomePaceiro = Convert.ToString(linha["A03_003_C"]);
+                r03Agendamentos.CodigoParceiro = Convert.ToString(linha["A03_001_C"]);
+                r03Agendamentos.Contato = Convert.ToString(linha["CONTATO"]);
+                r03Agendamentos.Celular = Convert.ToString(linha["CELULAR"]);
+                r03Agendamentos.Fone = Convert.ToString(linha["FONE"]);
+                r03AgendamentosCollection.Add(r03Agendamentos);
+            }
+            return r03AgendamentosCollection;
+        }
+
+        public DateTime pegaDataBrasil()
+        {
+            return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
         }
     }
 }
