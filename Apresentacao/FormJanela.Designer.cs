@@ -60,12 +60,12 @@
             this.toolStripMenuItemFechar});
             this.contextMenuStripMenuBalao.Name = "contextMenuStripMenuBalao";
             this.contextMenuStripMenuBalao.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStripMenuBalao.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStripMenuBalao.Size = new System.Drawing.Size(110, 26);
             // 
             // toolStripMenuItemFechar
             // 
             this.toolStripMenuItemFechar.Name = "toolStripMenuItemFechar";
-            this.toolStripMenuItemFechar.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemFechar.Size = new System.Drawing.Size(109, 22);
             this.toolStripMenuItemFechar.Text = "Fechar";
             this.toolStripMenuItemFechar.Click += new System.EventHandler(this.toolStripMenuItemFechar_Click);
             // 
@@ -78,6 +78,7 @@
             this.Name = "FormJanela";
             this.Text = "Principal";
             this.Load += new System.EventHandler(this.FormJanela_Load);
+            this.FontChanged += new System.EventHandler(this.FormJanela_FontChanged);
             this.contextMenuStripMenuBalao.ResumeLayout(false);
             this.ResumeLayout(false);
 

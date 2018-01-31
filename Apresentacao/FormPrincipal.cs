@@ -17,13 +17,13 @@ namespace Apresentacao
 {
     public partial class FormPrincipal : Form
     {
-
+        string celular;
+        string fone;
         R03Agendamentos r03 = new R03Agendamentos();
-        private string dataInicial = DateTime.Now.ToString();
-
 
         public FormPrincipal(R03Agendamentos r03Agendamentos)
         {
+
             InitializeComponent();
             this.r03 = r03Agendamentos;
         }
@@ -35,6 +35,8 @@ namespace Apresentacao
         /// <param name="e"></param>
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
+            this.maskedTextBoxData.ValidatingType = typeof(System.DateTime);
+            this.maskedTextBoxData.TypeValidationCompleted += new TypeValidationEventHandler(maskedTextBoxData_TypeValidationCompleted);
             if (string.IsNullOrEmpty(r03.Contato.Trim()))
             {
                 r03.Contato = "Nenhum Contato Encontrado!";
@@ -43,12 +45,27 @@ namespace Apresentacao
             {
                 r03.Fone = "Nenhum Telefone Encontrado!";
             }
+            else
+            {
+                fone = string.Format("{0: (##) ####-####}", Convert.ToInt64(r03.Fone.Trim()));
+            }
             if (string.IsNullOrEmpty(r03.Celular.Trim()))
             {
                 r03.Celular = "Nenhum Celular Encontrado!";
             }
-            string celular = string.Format("{0: (##) #####-####}", Convert.ToInt64(r03.Celular.Trim()));
-            string fone = string.Format("{0: (##) ####-####}", Convert.ToInt64(r03.Fone.Trim()));
+            else
+            {
+                try
+                {
+                    celular = string.Format("{0: (##) #####-####}", Convert.ToInt64(r03.Celular.Trim()));
+                }
+                catch (Exception EX)
+                {
+                    celular = "";
+                }
+
+            }
+
             string mensagem = string.Format("Agendado para " + r03.R03_001_d.ToShortDateString() + " AS " + r03.R03_002_c + "{0}", Environment.NewLine);
             mensagem += string.Format("Código: " + r03.CodigoParceiro.Trim() + "{0}", Environment.NewLine);
             mensagem += string.Format("Contato: " + r03.Contato.Trim() + "{0}", Environment.NewLine);
@@ -58,12 +75,12 @@ namespace Apresentacao
             txtMensagem.Text = mensagem;
 
             this.Text = r03.NomePaceiro;
-            this.dateTimePickerData.Text = dataInicial;
+
             notifyIconAlerta.BalloonTipText = r03.NomePaceiro;
             notifyIconAlerta.Visible = true;
             notifyIconAlerta.ShowBalloonTip(10000);
             notifyIconAlerta.Visible = false;
-            
+
         }
         /// <summary>
         /// função botão para não despertar mais a tarefa
@@ -173,7 +190,7 @@ namespace Apresentacao
         private void buttonDespertar_Click(object sender, EventArgs e)
         {
             //pega a data e hora e formata
-            string data = dateTimePickerData.Text.Replace("/", "").Trim();
+            string data = maskedTextBoxData.Text.Replace("/", "").Trim();
             string hora = maskedTextBoxHora.Text.Replace(":", "").Trim();
             //verifica se algum campo esta vazio, se estiver da um return e avisa que os dois campos tem que estar preenchido
             if (data.Equals("") || hora.Equals(""))
@@ -185,7 +202,7 @@ namespace Apresentacao
             R03Negocio negocio = new R03Negocio();
             try
             {
-                negocio.despertaDataEspecifica(r03.Ukey, negocio.user_ukey(Util.usuario()), dateTimePickerData.Text, maskedTextBoxHora.Text);
+                negocio.despertaDataEspecifica(r03.Ukey, negocio.user_ukey(Util.usuario()), maskedTextBoxData.Text, maskedTextBoxHora.Text);
                 MessageBox.Show("Tarefa Reagendada com Sucesso!", "Saerp Informa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Dispose();
             }
@@ -193,6 +210,42 @@ namespace Apresentacao
             {
                 MessageBox.Show("Não Foi Possivel Reagendar a Tarefa!\n" + ex.Message, "Saerp Informa", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+        }
+
+        private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+            try
+            {
+                R03Negocio negocio = new R03Negocio();
+                negocio.atualizaR03_006_nFechar(r03.Ukey);
+                for(int i = 0; i < Util.ukeys.Count; i++)
+                {
+                    if (r03.Ukey.Equals(Util.ukeys[i]))
+                    {
+                       Util.ukeys.RemoveAt(i);
+                        break;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao Atualizar Status da Tarefa! " + ex.Message, "SAERP Informa!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+        }
+
+        private void maskedTextBoxData_TypeValidationCompleted(object sender, TypeValidationEventArgs e)
+        {
+            if (!e.IsValidInput)
+            {
+                MessageBox.Show("Data Incorreta ! Favor Verificar o Campo Data!", "Saerp Informa!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                maskedTextBoxData.Focus();
+                return;
+
             }
         }
     }

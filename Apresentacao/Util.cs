@@ -9,6 +9,7 @@ namespace Apresentacao
 {
     public static class Util
     {
+        public static List<string> ukeys = new List<string>();
         /// <summary>
         /// função para pegar o nome do usuario que esta no arquivo usuario.txt na pasta do executavel
         /// </summary>

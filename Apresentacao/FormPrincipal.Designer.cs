@@ -38,13 +38,14 @@
             this.buttonUmaSemana = new System.Windows.Forms.Button();
             this.buttonUmMes = new System.Windows.Forms.Button();
             this.buttonDespertar = new System.Windows.Forms.Button();
-            this.maskedTextBoxHora = new System.Windows.Forms.MaskedTextBox();
             this.labelDespertar = new System.Windows.Forms.Label();
             this.labelData = new System.Windows.Forms.Label();
             this.labelHora = new System.Windows.Forms.Label();
             this.txtMensagem = new System.Windows.Forms.TextBox();
-            this.dateTimePickerData = new System.Windows.Forms.DateTimePicker();
             this.toolTipIcone = new System.Windows.Forms.ToolTip(this.components);
+            this.maskedTextBoxData = new System.Windows.Forms.MaskedTextBox();
+            this.maskedTextBoxHora = new System.Windows.Forms.MaskedTextBox();
+            this.monthCalendarCalendario = new System.Windows.Forms.MonthCalendar();
             this.SuspendLayout();
             // 
             // timerAlerta
@@ -114,19 +115,10 @@
             this.buttonDespertar.Location = new System.Drawing.Point(731, 390);
             this.buttonDespertar.Name = "buttonDespertar";
             this.buttonDespertar.Size = new System.Drawing.Size(89, 23);
-            this.buttonDespertar.TabIndex = 6;
+            this.buttonDespertar.TabIndex = 8;
             this.buttonDespertar.Text = "Redespertar";
             this.buttonDespertar.UseVisualStyleBackColor = true;
             this.buttonDespertar.Click += new System.EventHandler(this.buttonDespertar_Click);
-            // 
-            // maskedTextBoxHora
-            // 
-            this.maskedTextBoxHora.Location = new System.Drawing.Point(658, 392);
-            this.maskedTextBoxHora.Mask = "90:00";
-            this.maskedTextBoxHora.Name = "maskedTextBoxHora";
-            this.maskedTextBoxHora.Size = new System.Drawing.Size(67, 20);
-            this.maskedTextBoxHora.TabIndex = 8;
-            this.maskedTextBoxHora.ValidatingType = typeof(System.DateTime);
             // 
             // labelDespertar
             // 
@@ -134,7 +126,7 @@
             this.labelDespertar.Location = new System.Drawing.Point(9, 397);
             this.labelDespertar.Name = "labelDespertar";
             this.labelDespertar.Size = new System.Drawing.Size(74, 13);
-            this.labelDespertar.TabIndex = 9;
+            this.labelDespertar.TabIndex = 1;
             this.labelDespertar.Text = "Redespertar ?";
             // 
             // labelData
@@ -143,16 +135,16 @@
             this.labelData.Location = new System.Drawing.Point(496, 397);
             this.labelData.Name = "labelData";
             this.labelData.Size = new System.Drawing.Size(33, 13);
-            this.labelData.TabIndex = 10;
+            this.labelData.TabIndex = 7;
             this.labelData.Text = "Data:";
             // 
             // labelHora
             // 
             this.labelHora.AutoSize = true;
-            this.labelHora.Location = new System.Drawing.Point(619, 397);
+            this.labelHora.Location = new System.Drawing.Point(637, 397);
             this.labelHora.Name = "labelHora";
             this.labelHora.Size = new System.Drawing.Size(33, 13);
-            this.labelHora.TabIndex = 11;
+            this.labelHora.TabIndex = 10;
             this.labelHora.Text = "Hora:";
             // 
             // txtMensagem
@@ -162,27 +154,46 @@
             this.txtMensagem.Name = "txtMensagem";
             this.txtMensagem.ReadOnly = true;
             this.txtMensagem.Size = new System.Drawing.Size(818, 384);
-            this.txtMensagem.TabIndex = 12;
+            this.txtMensagem.TabIndex = 0;
             // 
-            // dateTimePickerData
+            // maskedTextBoxData
             // 
-            this.dateTimePickerData.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerData.Location = new System.Drawing.Point(529, 393);
-            this.dateTimePickerData.Name = "dateTimePickerData";
-            this.dateTimePickerData.Size = new System.Drawing.Size(84, 20);
-            this.dateTimePickerData.TabIndex = 13;
+            this.maskedTextBoxData.Location = new System.Drawing.Point(535, 393);
+            this.maskedTextBoxData.Mask = "##/##/####";
+            this.maskedTextBoxData.Name = "maskedTextBoxData";
+            this.maskedTextBoxData.Size = new System.Drawing.Size(68, 20);
+            this.maskedTextBoxData.TabIndex = 11;
+            this.maskedTextBoxData.ValidatingType = typeof(System.DateTime);
+            this.maskedTextBoxData.TypeValidationCompleted += new System.Windows.Forms.TypeValidationEventHandler(this.maskedTextBoxData_TypeValidationCompleted);
+            // 
+            // maskedTextBoxHora
+            // 
+            this.maskedTextBoxHora.Location = new System.Drawing.Point(676, 392);
+            this.maskedTextBoxHora.Mask = "##:##";
+            this.maskedTextBoxHora.Name = "maskedTextBoxHora";
+            this.maskedTextBoxHora.Size = new System.Drawing.Size(49, 20);
+            this.maskedTextBoxHora.TabIndex = 12;
+            this.maskedTextBoxHora.ValidatingType = typeof(System.DateTime);
+            // 
+            // monthCalendarCalendario
+            // 
+            this.monthCalendarCalendario.Location = new System.Drawing.Point(593, 216);
+            this.monthCalendarCalendario.Name = "monthCalendarCalendario";
+            this.monthCalendarCalendario.TabIndex = 13;
+            this.monthCalendarCalendario.Visible = false;
             // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(821, 424);
-            this.Controls.Add(this.dateTimePickerData);
+            this.Controls.Add(this.monthCalendarCalendario);
+            this.Controls.Add(this.maskedTextBoxHora);
+            this.Controls.Add(this.maskedTextBoxData);
             this.Controls.Add(this.txtMensagem);
             this.Controls.Add(this.labelHora);
             this.Controls.Add(this.labelData);
             this.Controls.Add(this.labelDespertar);
-            this.Controls.Add(this.maskedTextBoxHora);
             this.Controls.Add(this.buttonDespertar);
             this.Controls.Add(this.buttonUmMes);
             this.Controls.Add(this.buttonUmaSemana);
@@ -194,6 +205,7 @@
             this.Name = "FormPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormPrincipal_FormClosed);
             this.Load += new System.EventHandler(this.FormPrincipal_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -209,13 +221,14 @@
         private System.Windows.Forms.Button buttonUmaSemana;
         private System.Windows.Forms.Button buttonUmMes;
         private System.Windows.Forms.Button buttonDespertar;
-        private System.Windows.Forms.MaskedTextBox maskedTextBoxHora;
         private System.Windows.Forms.Label labelDespertar;
         private System.Windows.Forms.Label labelData;
         private System.Windows.Forms.Label labelHora;
         private System.Windows.Forms.TextBox txtMensagem;
-        private System.Windows.Forms.DateTimePicker dateTimePickerData;
         private System.Windows.Forms.ToolTip toolTipIcone;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxData;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxHora;
+        private System.Windows.Forms.MonthCalendar monthCalendarCalendario;
     }
 }
 

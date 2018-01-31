@@ -35,8 +35,8 @@ namespace Negocio
                 " INNER JOIN A03 ON A03.UKEY = R01.A03_UKEY" +
                 " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
-                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D = @DATA_DESPERTA" +
-                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C = @HORA_AGENDADA" +
+                " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_006_N = @DESPERTA_NOVAMENTE AND R03_001_D = @DATA_DESPERTA" +
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C <= @HORA_AGENDADA" +
                 " ORDER BY R03.TIMESTAMP ASC";
             DateTime dateTime = DateTime.Now;
             // string hora_minuto = string.Format("{0:hh:mm}", dateTime);
@@ -44,6 +44,7 @@ namespace Negocio
 
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@DESPERTA_TELA", 1);
+            conn.AdicionarParametros("@DESPERTA_NOVAMENTE", 0);
             conn.AdicionarParametros("@DATA_DESPERTA", DateTime.Now.Date);
             conn.AdicionarParametros("@UKEY_USER", ukey_usuario);
             conn.AdicionarParametros("@TAREFA_ENCERRADA", 0);
@@ -105,9 +106,10 @@ namespace Negocio
         {
             AcessaBanco conn = new AcessaBanco();
             conn.LimparParametros();
-            var update = "UPDATE R03 SET R03_004_N  = @VALOR, USR_UKEY = @USUARIO WHERE UKEY = @UKEY";
+            var update = "UPDATE R03 SET R03_004_N  = @VALOR, USR_UKEY = @USUARIO, TIMESTAMP = @TIMESTAMP WHERE UKEY = @UKEY";
             conn.AdicionarParametros("@VALOR", 1);
             conn.AdicionarParametros("@USUARIO", ukey_user);
+            conn.AdicionarParametros("@TIMESTAMP", DateTime.Now);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
         }
@@ -132,8 +134,8 @@ namespace Negocio
                 " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
                 " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D = @DATA_DESPERTA" +
-                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C <= @HORADESPERTA" +
-                " ORDER BY R03.TIMESTAMP ASC";
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C <= @HORADESPERTA AND R03_006_N = @DESPERTA_NOVAMENTE" +
+                " ORDER BY R03.R03_001_D ASC";
 
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("pt-BR");
 
@@ -145,6 +147,7 @@ namespace Negocio
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
             conn.AdicionarParametros("@TAREFA_ENCERRADA", 0);
             conn.AdicionarParametros("@HORADESPERTA", hrinicial);
+            conn.AdicionarParametros("@DESPERTA_NOVAMENTE", 0);
             dataTable = conn.ExecutaConsulta(CommandType.Text, select);
 
             foreach (DataRow linha in dataTable.Rows)
@@ -293,7 +296,7 @@ namespace Negocio
         {
             AcessaBanco conn = new AcessaBanco();
             R03AgendamentosCollection r03AgendamentosCollection = new R03AgendamentosCollection();
-            conn.CriarConexao();
+            conn.LimparParametros();
             DataTable dataTable = new DataTable();
             var select = "SELECT" +
                 " CASE WHEN A08.UKEY IS NULL THEN A03_016_C WHEN A08.UKEY IS NOT NULL THEN A08_005_C END AS CONTATO," +
@@ -305,8 +308,8 @@ namespace Negocio
                 " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
                 " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_001_D < @DATA_DESPERTA" +
-                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA" +
-                " ORDER BY R03.TIMESTAMP ASC";
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_006_N = @DESPERTA_NOVAMENTE" +
+                " ORDER BY R03.R03_001_D ASC";
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("pt-BR");
 
             string hrinicial = String.Format("{0:t}", DateTime.Now);
@@ -317,6 +320,7 @@ namespace Negocio
             conn.AdicionarParametros("@DATA_DESPERTA", data);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
             conn.AdicionarParametros("@TAREFA_ENCERRADA", 0);
+            conn.AdicionarParametros("@DESPERTA_NOVAMENTE", 0);
             dataTable = conn.ExecutaConsulta(CommandType.Text, select);
 
             foreach (DataRow linha in dataTable.Rows)
@@ -352,6 +356,26 @@ namespace Negocio
         public DateTime pegaDataBrasil()
         {
             return TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+        }
+
+        public void atualizaR03_006_n(string ukey)
+        {
+            AcessaBanco conn = new AcessaBanco();
+            conn.LimparParametros();
+            var update = "UPDATE R03 SET R03_006_N = @DESPERTA_NOVAMENTE WHERE UKEY = @UKEY";
+            conn.AdicionarParametros("@DESPERTA_NOVAMENTE", 1);
+            conn.AdicionarParametros("@UKEY", ukey);
+            conn.ExecutaManipulacao(CommandType.Text, update);
+        }
+
+        public void atualizaR03_006_nFechar(string ukey)
+        {
+            AcessaBanco conn = new AcessaBanco();
+            conn.LimparParametros();
+            var update = "UPDATE R03 SET R03_006_N = @DESPERTA_NOVAMENTE WHERE UKEY = @UKEY";
+            conn.AdicionarParametros("@DESPERTA_NOVAMENTE", 0);
+            conn.AdicionarParametros("@UKEY", ukey);
+            conn.ExecutaManipulacao(CommandType.Text, update);
         }
     }
 }

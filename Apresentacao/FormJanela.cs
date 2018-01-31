@@ -17,15 +17,17 @@ namespace Apresentacao
         R03Negocio negocio = new R03Negocio();
         R03AgendamentosCollection collection = new R03AgendamentosCollection();
         R03Agendamentos agendamentos = new R03Agendamentos();
-
+       
         public FormJanela()
         {
             InitializeComponent();
-            // carrega atrasadas primeiro
+            this.timerTarefas.Start();
+            //carrega atrasadas primeiro
             carregaAtrasada();
             atrasadasComHora();
+
             this.notifyIconJanelaPrincipal.Visible = true;
-            
+
         }
         /// <summary>
         /// Evento load do form, responsavel por ocultar o icone da aplicação e deixa-la minimizada
@@ -46,6 +48,8 @@ namespace Apresentacao
         /// <param name="e"></param>
         private void timerTarefas_Tick(object sender, EventArgs e)
         {
+            carregaAtrasada();
+            atrasadasComHora();
             // recebe a coleção de tarefas 
             collection = negocio.buscaAgendamento(negocio.user_ukey(Util.usuario()));
             //verifico se não é vazio a collection
@@ -59,8 +63,11 @@ namespace Apresentacao
             {
                 agendamentos = collection[i];
                 FormPrincipal frm = new FormPrincipal(agendamentos);
+                negocio.atualizaR03_006_n(agendamentos.Ukey);
+                Util.ukeys.Add(agendamentos.Ukey);
                 frm.Show();
             }
+            collection.Clear();
 
         }
         /// <summary>
@@ -70,7 +77,7 @@ namespace Apresentacao
         private void carregaAtrasada()
         {
             collection = negocio.tarefasAtrasadas(negocio.user_ukey(Util.usuario()));
-            if(collection.Count == 0)
+            if (collection.Count == 0)
             {
                 return;
             }
@@ -78,8 +85,11 @@ namespace Apresentacao
             {
                 agendamentos = collection[i];
                 FormPrincipal frm = new FormPrincipal(agendamentos);
+                negocio.atualizaR03_006_n(agendamentos.Ukey);
+                Util.ukeys.Add(agendamentos.Ukey);
                 frm.Show();
             }
+            collection.Clear();
         }
 
         private void notifyIconJanelaPrincipal_MouseMove(object sender, MouseEventArgs e)
@@ -89,9 +99,9 @@ namespace Apresentacao
 
         private void notifyIconJanelaPrincipal_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
-               
+
             }
         }
 
@@ -112,7 +122,30 @@ namespace Apresentacao
             {
                 agendamentos = collection[i];
                 FormPrincipal frm = new FormPrincipal(agendamentos);
+                negocio.atualizaR03_006_n(agendamentos.Ukey);
+                Util.ukeys.Add(agendamentos.Ukey);
                 frm.Show();
+            }
+            collection.Clear();
+        }
+
+        private void FormJanela_FontChanged(object sender, EventArgs e)
+        {
+            string ukey;
+            try
+            {
+                R03Negocio negocio = new R03Negocio();
+                for (int i = 0; i < Util.ukeys.Count; i++)
+                {
+                    ukey = Util.ukeys[i];
+                    negocio.atualizaR03_006_nFechar(ukey);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao Atualizar Status da Tarefa! " + ex.Message, "SAERP Informa!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
     }
