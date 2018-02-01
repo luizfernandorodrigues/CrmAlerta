@@ -35,8 +35,9 @@ namespace Apresentacao
         /// <param name="e"></param>
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-            this.maskedTextBoxData.ValidatingType = typeof(System.DateTime);
-            this.maskedTextBoxData.TypeValidationCompleted += new TypeValidationEventHandler(maskedTextBoxData_TypeValidationCompleted);
+            //antigo campo de data formatado e usando a validação
+            //this.maskedTextBoxData.ValidatingType = typeof(System.DateTime);
+            //this.maskedTextBoxData.TypeValidationCompleted += new TypeValidationEventHandler(maskedTextBoxData_TypeValidationCompleted);
             if (string.IsNullOrEmpty(r03.Contato.Trim()))
             {
                 r03.Contato = "Nenhum Contato Encontrado!";
@@ -190,7 +191,7 @@ namespace Apresentacao
         private void buttonDespertar_Click(object sender, EventArgs e)
         {
             //pega a data e hora e formata
-            string data = maskedTextBoxData.Text.Replace("/", "").Trim();
+            string data = dateTimePickerData.Text.Replace("/", "").Trim();
             string hora = maskedTextBoxHora.Text.Replace(":", "").Trim();
             //verifica se algum campo esta vazio, se estiver da um return e avisa que os dois campos tem que estar preenchido
             if (data.Equals("") || hora.Equals(""))
@@ -202,7 +203,7 @@ namespace Apresentacao
             R03Negocio negocio = new R03Negocio();
             try
             {
-                negocio.despertaDataEspecifica(r03.Ukey, negocio.user_ukey(Util.usuario()), maskedTextBoxData.Text, maskedTextBoxHora.Text);
+                negocio.despertaDataEspecifica(r03.Ukey, negocio.user_ukey(Util.usuario()), dateTimePickerData.Text, maskedTextBoxHora.Text);
                 MessageBox.Show("Tarefa Reagendada com Sucesso!", "Saerp Informa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Dispose();
             }
@@ -237,7 +238,8 @@ namespace Apresentacao
             }
 
         }
-
+        ///*** função que validava antigo campo de data****
+        /*
         private void maskedTextBoxData_TypeValidationCompleted(object sender, TypeValidationEventArgs e)
         {
             if (!e.IsValidInput)
@@ -247,6 +249,6 @@ namespace Apresentacao
                 return;
 
             }
-        }
+        }*/
     }
 }

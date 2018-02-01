@@ -36,7 +36,7 @@ namespace Negocio
                 " LEFT JOIN A08 ON A08.A03_UKEY = A03.UKEY AND A08.A08_001_N = 2" +
                 " INNER JOIN USUARIO ON USUARIO.UKEY = R03.USR_UKEY" +
                 " WHERE R03_004_N = @NAO_DESPERTA AND R03_010_N = @DESPERTA_TELA AND R03_006_N = @DESPERTA_NOVAMENTE AND R03_001_D = @DATA_DESPERTA" +
-                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C <= @HORA_AGENDADA" +
+                " AND R03.USR_UKEY = @UKEY_USER AND R03_008_N = @TAREFA_ENCERRADA AND R03_002_C = @HORA_AGENDADA" +
                 " ORDER BY R03.TIMESTAMP ASC";
             DateTime dateTime = DateTime.Now;
             // string hora_minuto = string.Format("{0:hh:mm}", dateTime);
@@ -193,11 +193,12 @@ namespace Negocio
             AcessaBanco conn = new AcessaBanco();
             conn.LimparParametros();
             var update = "UPDATE R03 SET R03_004_N = @NAO_DESPERTA, R03_006_N = @VOLTA_DESPERTAR," +
-                " R03_002_C = @HORA_AGENDADA, USR_UKEY = @UKEY_USER WHERE UKEY = @UKEY";
+                " R03_002_C = @HORA_AGENDADA, USR_UKEY = @UKEY_USER, TIMESTAMP = @TIMESTAMP WHERE UKEY = @UKEY";
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@VOLTA_DESPERTAR", 0);
             conn.AdicionarParametros("@HORA_AGENDADA", horaAtual);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
+            conn.AdicionarParametros("@TIMESTAMP", DateTime.Now);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
         }
@@ -216,11 +217,12 @@ namespace Negocio
             AcessaBanco conn = new AcessaBanco();
             conn.LimparParametros();
             var update = "UPDATE R03 SET R03_004_N = @NAO_DESPERTA, R03_006_N = @VOLTA_DESPERTAR," +
-                " R03_001_D = @HORA_AGENDADA, USR_UKEY = @UKEY_USER WHERE UKEY = @UKEY";
+                " R03_001_D = @HORA_AGENDADA, USR_UKEY = @UKEY_USER, TIMESTAMP = @TIMESTAMP WHERE UKEY = @UKEY";
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@VOLTA_DESPERTAR", 0);
             conn.AdicionarParametros("@HORA_AGENDADA", diaAtual);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
+            conn.AdicionarParametros("@TIMESTAMP", DateTime.Now);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
         }
@@ -239,11 +241,12 @@ namespace Negocio
             AcessaBanco conn = new AcessaBanco();
             conn.LimparParametros();
             var update = "UPDATE R03 SET R03_004_N = @NAO_DESPERTA, R03_006_N = @VOLTA_DESPERTAR," +
-                " R03_001_D = @HORA_AGENDADA, USR_UKEY = @UKEY_USER WHERE UKEY = @UKEY";
+                " R03_001_D = @HORA_AGENDADA, USR_UKEY = @UKEY_USER, TIMESTAMP = @TIMESTAMP WHERE UKEY = @UKEY";
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@VOLTA_DESPERTAR", 0);
             conn.AdicionarParametros("@HORA_AGENDADA", diaAtual);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
+            conn.AdicionarParametros("@TIMESTAMP", DateTime.Now);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
         }
@@ -262,11 +265,12 @@ namespace Negocio
             AcessaBanco conn = new AcessaBanco();
             conn.LimparParametros();
             var update = "UPDATE R03 SET R03_004_N = @NAO_DESPERTA, R03_006_N = @VOLTA_DESPERTAR," +
-                " R03_001_D = @HORA_AGENDADA, USR_UKEY = @UKEY_USER WHERE UKEY = @UKEY";
+                " R03_001_D = @HORA_AGENDADA, USR_UKEY = @UKEY_USER, TIMESTAMP = @TIMESTAMP WHERE UKEY = @UKEY";
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@VOLTA_DESPERTAR", 0);
             conn.AdicionarParametros("@HORA_AGENDADA", mesAtual);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
+            conn.AdicionarParametros("@TIMESTAMP", DateTime.Now);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
         }
@@ -282,12 +286,13 @@ namespace Negocio
             AcessaBanco conn = new AcessaBanco();
             conn.LimparParametros();
             var update = "UPDATE R03 SET R03_004_N = @NAO_DESPERTA, R03_006_N = @VOLTA_DESPERTAR," +
-                " R03_001_D = @HORA_AGENDADA, R03_002_C = @HORA, USR_UKEY = @UKEY_USER WHERE UKEY = @UKEY";
+                " R03_001_D = @HORA_AGENDADA, R03_002_C = @HORA, USR_UKEY = @UKEY_USER, TIMESTAMP = @TIMESTAMP WHERE UKEY = @UKEY";
             conn.AdicionarParametros("@NAO_DESPERTA", 0);
             conn.AdicionarParametros("@VOLTA_DESPERTAR", 0);
             conn.AdicionarParametros("@HORA_AGENDADA", data);
             conn.AdicionarParametros("@HORA", hora);
             conn.AdicionarParametros("@UKEY_USER", user_ukey);
+            conn.AdicionarParametros("@TIMESTAMP", DateTime.Now);
             conn.AdicionarParametros("@UKEY", ukey);
             conn.ExecutaManipulacao(CommandType.Text, update);
         }

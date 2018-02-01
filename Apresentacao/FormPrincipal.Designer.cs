@@ -43,9 +43,8 @@
             this.labelHora = new System.Windows.Forms.Label();
             this.txtMensagem = new System.Windows.Forms.TextBox();
             this.toolTipIcone = new System.Windows.Forms.ToolTip(this.components);
-            this.maskedTextBoxData = new System.Windows.Forms.MaskedTextBox();
             this.maskedTextBoxHora = new System.Windows.Forms.MaskedTextBox();
-            this.monthCalendarCalendario = new System.Windows.Forms.MonthCalendar();
+            this.dateTimePickerData = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // timerAlerta
@@ -156,16 +155,6 @@
             this.txtMensagem.Size = new System.Drawing.Size(818, 384);
             this.txtMensagem.TabIndex = 0;
             // 
-            // maskedTextBoxData
-            // 
-            this.maskedTextBoxData.Location = new System.Drawing.Point(535, 393);
-            this.maskedTextBoxData.Mask = "##/##/####";
-            this.maskedTextBoxData.Name = "maskedTextBoxData";
-            this.maskedTextBoxData.Size = new System.Drawing.Size(68, 20);
-            this.maskedTextBoxData.TabIndex = 11;
-            this.maskedTextBoxData.ValidatingType = typeof(System.DateTime);
-            this.maskedTextBoxData.TypeValidationCompleted += new System.Windows.Forms.TypeValidationEventHandler(this.maskedTextBoxData_TypeValidationCompleted);
-            // 
             // maskedTextBoxHora
             // 
             this.maskedTextBoxHora.Location = new System.Drawing.Point(676, 392);
@@ -175,21 +164,21 @@
             this.maskedTextBoxHora.TabIndex = 12;
             this.maskedTextBoxHora.ValidatingType = typeof(System.DateTime);
             // 
-            // monthCalendarCalendario
+            // dateTimePickerData
             // 
-            this.monthCalendarCalendario.Location = new System.Drawing.Point(593, 216);
-            this.monthCalendarCalendario.Name = "monthCalendarCalendario";
-            this.monthCalendarCalendario.TabIndex = 13;
-            this.monthCalendarCalendario.Visible = false;
+            this.dateTimePickerData.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerData.Location = new System.Drawing.Point(535, 393);
+            this.dateTimePickerData.Name = "dateTimePickerData";
+            this.dateTimePickerData.Size = new System.Drawing.Size(87, 20);
+            this.dateTimePickerData.TabIndex = 13;
             // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(821, 424);
-            this.Controls.Add(this.monthCalendarCalendario);
+            this.Controls.Add(this.dateTimePickerData);
             this.Controls.Add(this.maskedTextBoxHora);
-            this.Controls.Add(this.maskedTextBoxData);
             this.Controls.Add(this.txtMensagem);
             this.Controls.Add(this.labelHora);
             this.Controls.Add(this.labelData);
@@ -226,9 +215,8 @@
         private System.Windows.Forms.Label labelHora;
         private System.Windows.Forms.TextBox txtMensagem;
         private System.Windows.Forms.ToolTip toolTipIcone;
-        private System.Windows.Forms.MaskedTextBox maskedTextBoxData;
         private System.Windows.Forms.MaskedTextBox maskedTextBoxHora;
-        private System.Windows.Forms.MonthCalendar monthCalendarCalendario;
+        private System.Windows.Forms.DateTimePicker dateTimePickerData;
     }
 }
 
